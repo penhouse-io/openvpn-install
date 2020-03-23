@@ -1256,9 +1256,22 @@ function manageMenu () {
 # Check for root, TUN, OS...
 initialCheck
 
-# Check if OpenVPN is already installed
-if [[ -e /etc/openvpn/server.conf ]]; then
-	manageMenu
+# Check if action is set
+if [ -z "$INIT_ACTION" ]
+then
+	# Check if OpenVPN is already installed
+	if [[ -e /etc/openvpn/server.conf ]]; then
+		manageMenu
+	else
+		installOpenVPN
+	fi
 else
-	installOpenVPN
+	case $MENU_OPTION in
+		1)
+			manageMenu
+		;;
+		2)
+			installOpenVPN
+		;;
+	esac
 fi
